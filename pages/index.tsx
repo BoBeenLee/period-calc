@@ -1,22 +1,15 @@
+import { useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import Period from "../components/period/Period";
-import { useState } from "react";
-import { diffInDays } from "../utils/datetime";
+import { usePeriods } from "../hooks/usePeriods";
 
 const MONTH_IN_DAYS = 30;
 const YEAR_IN_DAYS = 365;
 
 const Home: NextPage = () => {
-  const [periods, setPeriods] = useState<Array<[string, string]>>([]);
-  const totalPeriod = periods.reduce((res, period) => {
-    const [sDate, eDate] = period;
-    return res + diffInDays(sDate, eDate);
-  }, 0);
-  const onAddPeriod = (sDate: string, eDate: string) => {
-    setPeriods([...periods, [sDate, eDate]]);
-  };
+  const { periods, totalPeriod, onAdd: onAddPeriod } = usePeriods();
 
   return (
     <div className={styles.container}>
